@@ -1,0 +1,149 @@
+include 'lib/list'
+
+data left <=1>
+data straight <=2>
+data right <=3>
+data turn <left|straight|right>
+data direction <='^'|='<'|='>'|='v'>
+
+data movingRight <{cart: <cart>, rail: <rail>}?($ <{cart: <{direction: <='^'>}>, rail: <='/'>}
+| {cart: <{direction: <='>'>}>, rail: <='-'>}
+| {cart: <{direction: <='v'>}>, rail: <='\'>}
+| {cart: <{turn: <right>, direction: <='^'>}>, rail: <='+'>}
+| {cart: <{turn: <straight>, direction: <='>'>}>, rail: <='+'>}
+| {cart: <{turn: <left>, direction: <='v'>}>, rail: <='+'>}
+>)>
+
+data movingLeft <{cart: <cart>, rail: <rail>}?($ <{cart: <{direction: <='^'>}>, rail: <='\'>}
+| {cart: <{direction: <='<'>}>, rail: <='-'>}
+| {cart: <{direction: <='v'>}>, rail: <='/'>}
+| {cart: <{turn: <left>, direction: <='^'>}>, rail: <='+'>}
+| {cart: <{turn: <straight>, direction: <='<'>}>, rail: <='+'>}
+| {cart: <{turn: <right>, direction: <='v'>}>, rail: <='+'>}
+>)>
+
+data movingUp <{cart: <cart>, rail: <rail>}?($ <{cart: <{direction: <='^'>}>, rail: <='|'>}
+| {cart: <{direction: <='>'>}>, rail: <='/'>}
+| {cart: <{direction: <='<'>}>, rail: <='\'>}
+| {cart: <{turn: <straight>, direction: <='^'>}>, rail: <='+'>}
+| {cart: <{turn: <left>, direction: <='>'>}>, rail: <='+'>}
+| {cart: <{turn: <right>, direction: <='<'>}>, rail: <='+'>}
+>)>
+
+data movingDown <{cart: <cart>, rail: <rail>}?($ <{cart: <{direction: <='<'>}>, rail: <='/'>}
+| {cart: <{direction: <='>'>}>, rail: <='\'>}
+| {cart: <{direction: <='v'>}>, rail: <='|'>}
+| {cart: <{turn: <left>, direction: <='<'>}>, rail: <='+'>}
+| {cart: <{turn: <right>, direction: <='>'>}>, rail: <='+'>}
+| {cart: <{turn: <straight>, direction: <='v'>}>, rail: <='+'>}
+>)>
+
+composer tracks
+  [<terrain|cart|=' '>+]
+  rule terrain: {rail: <'[-|/\\+]'>}
+  rule cart: <'[<>^v]'> -> {cart: {direction: $, turn: 1}, rail: $ -> \(
+      <='^'|='v'> '|' !
+      <='<'|='>'> '-' !
+    \)}
+end tracks
+
+def map: [$IN::lines -> \(<~=''> $!\) -> tracks];
+
+// part 1
+templates firstCrash
+  @: $;
+  [$@ -> \[i;j](<{cart:<>}> [$i,$j] !\)... ...] -> #
+  when <[<[](3)>]> do $... -> \(<[](3)> $! \) !
+  when <=[]> !VOID
+  otherwise [$... -> \(
+    def i: $(1);
+    def j: $(2);
+    templates nextTurnChoice
+      when <?($@firstCrash($i;$j) <{rail: <='+'>}>)> do $::raw mod 3 + 1 ! otherwise $!
+    end nextTurnChoice
+    $@firstCrash($i; $j) -> #
+    when <movingRight> do
+      [$i,$j+1, $@firstCrash($i;$j+1) -> \(<{cart:<>}> 'X'!\)]!
+      ^@firstCrash($i; $j).cart -> {direction: '>', turn: $.turn -> nextTurnChoice}
+        -> ..|@firstCrash($i;$j+1): (cart:$);
+    when <movingLeft> do
+      [$i,$j-1, $@firstCrash($i;$j-1) -> \(<{cart:<>}> 'X'!\)]!
+      ^@firstCrash($i; $j).cart -> {direction: '<', turn: $.turn -> nextTurnChoice}
+        -> ..|@firstCrash($i;$j-1): (cart:$);
+    when <movingUp> do
+      [$i-1,$j, $@firstCrash($i-1;$j) -> \(<{cart:<>}> 'X'!\)]!
+      ^@firstCrash($i; $j).cart -> {direction: '^', turn: $.turn -> nextTurnChoice}
+        -> ..|@firstCrash($i-1;$j): (cart:$);
+    when <movingDown> do
+      [$i+1,$j, $@firstCrash($i+1;$j) -> \(<{cart:<>}> 'X'!\)]!
+      ^@firstCrash($i; $j).cart -> {direction: 'v', turn: $.turn -> nextTurnChoice}
+        -> ..|@firstCrash($i+1;$j): (cart:$);
+  \)] -> list/bubblesort&{compare: elementwise} -> #
+end firstCrash
+
+$map -> firstCrash -> '$(2) -> $-1;,$(1) -> $-1;
+' -> !OUT::write
+
+//part 2
+operator (a elementwise b)
+  1 -> #
+  when <$a::length~..?($ <$b::length~..>)> 0 !
+  when <$a::length~..> -1 !
+  when <$b::length~..> 1 !
+  when <?($a($) <..~$b($)>)> -1 !
+  when <?($a($) <$b($)~..>)> 1 !
+  otherwise $ + 1 -> #
+end elementwise
+
+templates lastCart
+  @: $;
+  [$@ -> \[i;j](<{cart:<>}> [$i,$j] !\)... ...] -> #
+  when <[](..1)> do $(1)!
+  otherwise [$... -> \(
+    def i: $(1);
+    def j: $(2);
+    templates nextTurnChoice
+      when <?($@lastCart($i;$j) <{rail: <='+'>}>)> do $::raw mod 3 + 1 ! otherwise $!
+    end nextTurnChoice
+    $@lastCart($i; $j) -> #
+    when <movingRight> do
+      def next: ^@lastCart($i; $j).cart -> {direction: '>', turn: $.turn -> nextTurnChoice}
+        -> (cart:$);
+      $@lastCart($i;$j+1) -> \(
+        when <{cart:<>}> do ^@lastCart($i;$j+1).cart -> !VOID
+        otherwise
+          ..|@lastCart($i;$j+1): $next;
+          [$i, $j+1] !
+      \)!
+    when <movingLeft> do
+      def next: ^@lastCart($i; $j).cart -> {direction: '<', turn: $.turn -> nextTurnChoice}
+        -> (cart:$);
+      $@lastCart($i;$j-1) -> \(
+        when <{cart:<>}> do ^@lastCart($i;$j-1).cart -> !VOID
+        otherwise
+          ..|@lastCart($i;$j-1): $next;
+          [$i, $j-1] !
+      \)!
+    when <movingUp> do
+      def next: ^@lastCart($i; $j).cart -> {direction: '^', turn: $.turn -> nextTurnChoice}
+      -> (cart:$);
+      $@lastCart($i-1;$j) -> \(
+        when <{cart:<>}> do ^@lastCart($i-1;$j).cart -> !VOID
+        otherwise
+          ..|@lastCart($i-1;$j): $next;
+          [$i-1, $j] !
+      \)!
+    when <movingDown> do
+      def next: ^@lastCart($i; $j).cart -> {direction: 'v', turn: $.turn -> nextTurnChoice}
+      -> (cart:$);
+      $@lastCart($i+1;$j) -> \(
+        when <{cart:<>}> do ^@lastCart($i+1;$j).cart -> !VOID
+        otherwise
+          ..|@lastCart($i+1;$j): $next;
+          [$i+1, $j] !
+      \)!
+  \)] -> [$... -> \(<?($@lastCart($(1);$(2)) <{cart:<>}>)> $!\)] -> list/bubblesort&{compare: elementwise} -> #
+end lastCart
+
+$map -> lastCart -> '$(2) -> $-1;,$(1) -> $-1;
+' -> !OUT::write

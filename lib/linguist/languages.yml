@@ -6026,6 +6026,10 @@ TXL:
   tm_scope: source.txl
   ace_mode: text
   language_id: 366
+Tailspin:
+  type: programming
+  extensions:
+  - ".tt"
 Tcl:
   type: programming
   color: "#e4cc98"
