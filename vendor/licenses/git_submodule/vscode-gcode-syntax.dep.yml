@@ -1,6 +1,6 @@
 ---
 name: vscode-gcode-syntax
-version: c5b912c580235f22b2203b278a137005f1fc13c4
+version: dfe8a05a2cee7225db1a6c399f51773f93ddf750
 type: git_submodule
 homepage: https://github.com/appliedengdesign/vscode-gcode-syntax
 license: mit
@@ -9,7 +9,7 @@ licenses:
   text: |
     MIT License
 
-    Copyright (c) 2020 Applied Engineering & Design
+    Copyright (c) 2022 Applied Engineering & Design
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

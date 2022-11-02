@@ -1,6 +1,6 @@
 ---
 name: qsharp-compiler
-version: 233e3e8058dc1a758a65050d47f57696df6f42eb
+version: 0630b8d9a036734760ed07a6ce13947328d46eac
 type: git_submodule
 homepage: https://github.com/microsoft/qsharp-compiler
 license: mit

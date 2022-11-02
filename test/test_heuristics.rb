@@ -271,9 +271,25 @@ class TestHeuristics < Minitest::Test
     })
   end
 
+  def test_bf_by_heuristics
+    assert_heuristics({
+      "Beef" => all_fixtures("Beef", "*.bf"),
+      "Brainfuck" => all_fixtures("Brainfuck", "*.bf"),
+      "HyPhy" => all_fixtures("HyPhy", "*.bf"),
+      nil => all_fixtures("Befunge", "*.bf"),
+    })
+  end
+
   def test_bi_by_heuristics
     assert_heuristics({
       "FreeBasic" => all_fixtures("FreeBasic", "*.bi")
+    })
+  end
+
+  def test_bs_by_heuristics
+    assert_heuristics({
+      "BrighterScript" => all_fixtures("BrighterScript", "*.bs"),
+      "Bikeshed" => all_fixtures("Bikeshed", "*.bs")
     })
   end
 
@@ -326,6 +342,12 @@ class TestHeuristics < Minitest::Test
     })
   end
 
+  def test_csc_by_heuristics
+    assert_heuristics({
+      "GSC" => all_fixtures("GSC", "*.csc")
+    })
+  end
+
   def test_csl_by_heuristics
     assert_heuristics({
       "Kusto" => all_fixtures("Kusto", "*.csl"),
@@ -348,6 +370,14 @@ class TestHeuristics < Minitest::Test
     })
   end
 
+  def test_e_by_heuristics
+    assert_heuristics({
+      "E" => all_fixtures("E", "*.E"),
+      "Eiffel" => all_fixtures("Eiffel", "*.e"),
+      "Euphoria" => all_fixtures("Euphoria", "*.e")
+    })
+  end
+
   def test_ecl_by_heuristics
     assert_heuristics({
       "ECL" => all_fixtures("ECL", "*.ecl"),
@@ -359,6 +389,13 @@ class TestHeuristics < Minitest::Test
     assert_heuristics({
       "Erlang" => all_fixtures("Erlang", "*.es"),
       "JavaScript" => all_fixtures("JavaScript", "*.es")
+    })
+  end
+
+  def test_ex_by_heuristics
+    assert_heuristics({
+      "Elixir" => all_fixtures("Elixir", "*.ex"),
+      "Euphoria" => all_fixtures("Euphoria", "*.ex")
     })
   end
 
@@ -400,6 +437,13 @@ class TestHeuristics < Minitest::Test
     }, alt_name="main.ftl")
   end
 
+  def test_g_by_heuristics
+    assert_heuristics({
+      "GAP" => all_fixtures("GAP", "*.g*"),
+      "G-code" => all_fixtures("G-code", "*.g")
+    }, alt_name="test.g")
+  end
+
   def test_gd_by_heuristics
     assert_heuristics({
       "GAP" => all_fixtures("GAP", "*.gd"),
@@ -428,6 +472,18 @@ class TestHeuristics < Minitest::Test
     assert_heuristics({
       nil => all_fixtures("JavaScript")
     }, alt_name="test.gs")
+  end
+
+  def test_gsc_by_heuristics
+    assert_heuristics({
+      "GSC" => all_fixtures("GSC", "*.gsc")
+    })
+  end
+
+  def test_gsh_by_heuristics
+    assert_heuristics({
+      "GSC" => all_fixtures("GSC", "*.gsh")
+    })
   end
 
   def test_h_by_heuristics
@@ -476,6 +532,14 @@ class TestHeuristics < Minitest::Test
         all_fixtures("Pawn", "*") +
         all_fixtures("SQL", "*")
     }, alt_name="foo.inc")
+  end
+
+  def test_json_by_heuristics
+    assert_heuristics({
+      "OASv2-json" => all_fixtures("OASv2-json", "*.json"),
+      "OASv3-json" => all_fixtures("OASv3-json", "*.json"),
+      "JSON" => all_fixtures("JSON", "*.json"),
+    })
   end
 
   def test_l_by_heuristics
@@ -539,6 +603,13 @@ class TestHeuristics < Minitest::Test
   def test_mask_by_heuristics
     assert_heuristics({
       "Unity3D Asset" => all_fixtures("Unity3D Asset", "*.mask")
+    })
+  end
+
+  def test_mc_by_heuristics
+    assert_heuristics({
+      "Monkey C" => all_fixtures("Monkey C", "*.mc"),
+      "Win32 Message File" => all_fixtures("Win32 Message File", "*.mc")
     })
   end
 
@@ -757,6 +828,13 @@ class TestHeuristics < Minitest::Test
     })
   end
 
+  def test_scd_by_heuristics
+    assert_heuristics({
+      "SuperCollider" => all_fixtures("SuperCollider", "*"),
+      "Markdown" => all_fixtures("Markdown", "*.scd")
+    }, alt_name="test.scd")
+  end
+
   def test_sol_by_heuristics
     assert_heuristics({
       "Gerber Image" => Dir.glob("#{fixtures_path}/Generic/sol/Gerber Image/*"),
@@ -787,6 +865,20 @@ class TestHeuristics < Minitest::Test
     })
   end
 
+  def test_star_by_heuristics
+    assert_heuristics({
+      "STAR" => all_fixtures("STAR", "*.star"),
+      "Starlark" => all_fixtures("Starlark", "*.star")
+    })
+  end
+
+  def test_stl_by_heuristics
+    assert_heuristics({
+      "STL" => Dir.glob("#{fixtures_path}/Generic/stl/STL/*"),
+      nil => Dir.glob("#{fixtures_path}/Generic/stl/nil/*")
+    })
+  end
+
   def test_t_by_heuristics
     # Turing not fully covered.
     assert_heuristics({
@@ -795,6 +887,13 @@ class TestHeuristics < Minitest::Test
       "Raku" => ["Raku/01-dash-uppercase-i.t", "Raku/01-parse.t", "Raku/advent2009-day16.t",
                  "Raku/basic-open.t", "Raku/calendar.t", "Raku/for.t", "Raku/hash.t",
                  "Raku/listquote-whitespace.t"]
+    })
+  end
+
+  def test_tag_by_heuristics
+    assert_heuristics({
+      "Java Server Pages" => Dir.glob("#{fixtures_path}/Generic/tag/Java Server Pages/*"),
+      nil => Dir.glob("#{fixtures_path}/Generic/tag/nil/*")
     })
   end
 
@@ -828,8 +927,16 @@ class TestHeuristics < Minitest::Test
 
   def test_txt_by_heuristics
     assert_heuristics({
+      "Adblock Filter List" => all_fixtures("Adblock Filter List", "*.txt"),
       "Vim Help File" => all_fixtures("Vim Help File", "*.txt"),
       "Text" => all_fixtures("Text", "*.txt")
+    })
+  end
+
+  def test_url_by_heuristics
+    assert_heuristics({
+      "INI" => Dir.glob("#{fixtures_path}/Generic/url/INI/*"),
+      nil => Dir.glob("#{fixtures_path}/Generic/url/nil/*")
     })
   end
 
@@ -861,6 +968,24 @@ class TestHeuristics < Minitest::Test
       "DirectX 3D File" => all_fixtures("DirectX 3D File", "*.x"),
       "Linker Script" => all_fixtures("Linker Script", "*.x"),
       "RPC" => all_fixtures("RPC", "*.x")
+    })
+  end
+
+  def test_yaml_by_heuristics
+    assert_heuristics({
+      "MiniYAML" => all_fixtures("MiniYAML", "*.yaml"),
+      "OASv2-yaml" => all_fixtures("OASv2-yaml", "*.yaml"),
+      "OASv3-yaml" => all_fixtures("OASv3-yaml", "*.yaml"),
+      "YAML" => all_fixtures("YAML", "*.yaml"),
+    })
+  end
+
+  def test_yml_by_heuristics
+    assert_heuristics({
+      "MiniYAML" => all_fixtures("MiniYAML", "*.yml"),
+      "OASv2-yaml" => all_fixtures("OASv2-yaml", "*.yml"),
+      "OASv3-yaml" => all_fixtures("OASv3-yaml", "*.yml"),
+      "YAML" => all_fixtures("YAML", "*.yml"),
     })
   end
 

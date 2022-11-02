@@ -1,13 +1,13 @@
 ---
 name: language-roff
-version: b3e91a18af710dd9bf8e323203b0dc589258027f
+version: 161cf78cb303ae09cee212f0dba4c86ff6a2373f
 type: git_submodule
 homepage: https://github.com/Alhadis/language-roff
 license: isc
 licenses:
 - sources: LICENSE.md
   text: |
-    Copyright (c) 2016-2021, John Gardner
+    Copyright (c) 2016-2022, John Gardner
 
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted, provided that the above

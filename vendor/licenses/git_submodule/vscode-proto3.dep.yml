@@ -1,6 +1,6 @@
 ---
 name: vscode-proto3
-version: 7042893d02d04fbe75984ba3d23e85740344ba4b
+version: f808059028c870ffd0b38babdfafcd49752dee1e
 type: git_submodule
 homepage: https://github.com/zxh0/vscode-proto3
 license: mit

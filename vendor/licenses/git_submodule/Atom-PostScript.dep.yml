@@ -1,6 +1,6 @@
 ---
 name: Atom-PostScript
-version: ee3ec96b77555592d492217135cb1eeb25ec0d44
+version: 192c11a0776f45a2dd4cf4209b2a2d77c741c35b
 type: git_submodule
 homepage: https://github.com/Alhadis/Atom-PostScript
 license: isc
