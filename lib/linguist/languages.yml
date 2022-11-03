@@ -4679,8 +4679,8 @@ Option List:
   - ackrc
   filenames:
   - ".ackrc"
-  - "ackrc"
-  - "mocha.opts"
+  - ackrc
+  - mocha.opts
   tm_scope: source.opts
   ace_mode: sh
   codemirror_mode: shell
@@ -6630,6 +6630,7 @@ Tailspin:
   type: programming
   extensions:
   - ".tt"
+  language_id: 545626482
 Talon:
   type: programming
   ace_mode: text
